@@ -8,10 +8,7 @@ right_image = imread('right.jpg');
 k1 = 0.2; k2 = -0.02; k3 = -0.0001;
 p1 = 0.001; p2 = -0.002;
 
-% Image values
-[height, width, channels] = size(left_image);
-center = [width / 2, height / 2];
-
+% Distortion Function
 distorted_image_left = applyDistortion(left_image, k1, k2, k3, p1, p2);
 distorted_image_right = applyDistortion(right_image, k1, k2, k3, p1, p2);
 
@@ -34,8 +31,8 @@ title(["Distorted Right Image with parameters:",;
         'k2:', num2str(k2);
         'k3:', num2str(k3)]);
 
-        function distorted_image = applyDistortion(left_image, k1, k2, k3, p1, p2)
-            [height, width, channels] = size(left_image);
+        function distorted_image = applyDistortion(image, k1, k2, k3, p1, p2)
+            [height, width, channels] = size(image);
             center = [width / 2, height / 2];
 
             distorted_image = zeros(height, width, channels, 'uint8');
@@ -59,7 +56,7 @@ title(["Distorted Right Image with parameters:",;
                     y_orig = round(y_distorted * center(2) + center(2));
                     % Debug over or undersize
                     if x_orig >= 1 && x_orig <= width && y_orig >= 1 && y_orig <= height
-                        distorted_image(y, x, :) = left_image(y_orig, x_orig, :);
+                        distorted_image(y, x, :) = image(y_orig, x_orig, :);
                     end
                 end
             end
